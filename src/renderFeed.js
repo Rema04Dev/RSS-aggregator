@@ -15,6 +15,7 @@ const getModal = () => {
   const modal = document.querySelector(".modal");
   const title = modal.querySelector(".modal-title");
   const body = modal.querySelector(".modal-body");
+  console.log(modal);
   return {
     title,
     body
@@ -29,7 +30,7 @@ const createPost = (post) => {
   buttonEl.addEventListener("click", () => {
     const modal = getModal();
     modal.title.textContent = title;
-    modal.body.textContent = `Цель: ${description}`;
+    modal.body.textContent = description;
   });
   linkEl.textContent = title;
   linkEl.href = link;

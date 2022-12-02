@@ -1,9 +1,7 @@
 import axios from "axios";
 import renderFeed from "./renderFeed.js";
 import parseRSS from "./parseRSS.js";
-import path from 'path';
 
-const url = "https://ru.hexlet.io/lessons.rss";
 const formatURL = (url) => {
   const proxyUrl = "https://allorigins.hexlet.app/raw?url=https://";
   const parsedUrl = new URL(url);
