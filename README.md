@@ -1,4 +1,4 @@
-# 🚀 Welcome to your new awesome project!
+# 🚀RSS агрегатор!
 
 This project has been created using **webpack-cli**, you can now run
 
@@ -11,5 +11,3 @@ or
 ```
 yarn build
 ```
-
-to bundle your application
