@@ -1,10 +1,11 @@
 import * as yup from "yup";
 import onChange from "on-change";
 import render, { elements } from "./view.js";
-import getPosts from "./model.js";
 import i18n from "i18next";
 import resources from "./locales/index.js";
 import { renderText } from "./view.js";
+import axios from "axios";
+import parseRSS from "./parseRSS.js";
 
 const EnBtn = document.querySelector("#en");
 const RuBtn = document.querySelector("#ru");
@@ -19,7 +20,8 @@ export const state = {
     errors: []
   },
   urls: [],
-  feed: {}
+  feeds: [],
+  posts: []
 };
 
 const i18next = i18n.createInstance();
@@ -28,7 +30,7 @@ i18next.init({
   debug: false,
   resources
 });
-renderText(elements, i18next);
+// renderText(elements, i18next);
 
 EnBtn.addEventListener("click", () => {
   i18next.changeLanguage("en");
@@ -40,8 +42,17 @@ RuBtn.addEventListener("click", () => {
   renderText(elements, i18next);
 });
 
+const buildProxyURL = (url) => {
+  const proxyUrl = "https://allorigins.hexlet.app/raw?url=https://";
+  const parsedUrl = new URL(url);
+  const { host, pathname } = parsedUrl;
+  return `${proxyUrl}${host}/${pathname}`;
+};
+
+const fetchRSS = (url) => axios.get(buildProxyURL(url));
+
 export default () => {
-  const watchedState = onChange(state, render());
+  const watchedState = onChange(state, render(elements));
   elements.form.addEventListener("submit", (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -51,8 +62,16 @@ export default () => {
     validate(url, urls)
       .then((url) => {
         watchedState.urls.push(url);
-        watchedState.form.state = "success";
-        getPosts(url);
+        watchedState.form.errors = [];
+        watchedState.form.state = "sending";
+        return fetchRSS(url);
+      })
+      .then((RSS) => {
+          const data = parseRSS(RSS);
+          watchedState.feeds.unshift(data.feed);
+          watchedState.posts = [...data.posts, ...watchedState.posts];
+          watchedState.form.errors = [];
+          watchedState.form.state = "success";
       })
       .catch((err) => {
         watchedState.form.state = "failed";
