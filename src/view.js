@@ -6,10 +6,13 @@ const templateFeedElement = document.querySelector("#template-feed-element");
 const templatePost = document.querySelector("#template-posts-wrapper");
 const templatePostElement = document.querySelector("#template-post-element");
 
-const getModal = () => {
+const getModal = (id, link) => {
   const modal = document.querySelector(".modal");
+  modal.setAttribute('id', id);
   const title = modal.querySelector(".modal-title");
   const body = modal.querySelector(".modal-body");
+  const modalButton = modal.querySelector('a');
+  modalButton.href = link;
   return {
     title,
     body
@@ -30,7 +33,7 @@ const createPost = (post) => {
   const linkEl = postElement.querySelector("a");
   const buttonEl = postElement.querySelector("button");
   buttonEl.addEventListener("click", () => {
-    const modal = getModal();
+    const modal = getModal(id, link);
     modal.title.textContent = title;
     modal.body.textContent = `${description}`;
   });
@@ -125,9 +128,9 @@ export const renderText = (elements, i18next) => {
   subtitle.textContent = i18next.t(`subtitle`);
   const placeholder = form.querySelector('[for="url-input"]');
   placeholder.textContent = i18next.t(`placeholder`);
-  // const examp/le = document.querySelector(".example");
-  // example.textContent = i18next.t(`example`);
-  // button.textContent = i18next.t(`button`);
+  const example = document.querySelector(".example");
+  example.textContent = i18next.t(`example`);
+  button.textContent = i18next.t(`button`);
 };
 
 export default () => (path, value) => {

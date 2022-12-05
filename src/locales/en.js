@@ -8,7 +8,8 @@ export default {
       messages: {
         url: "The link must be a valid URL",
         notOneOf: "Should not be empty",
-        success: "RSS uploaded successfully"
+        success: "RSS uploaded successfully",
+        sending: "RSS loading..."
       }
     }
   };
