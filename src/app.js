@@ -17,7 +17,7 @@ export const state = {
   lng: "ru",
   form: {
     state: "filling",
-    errors: []
+    errors: '',
   },
   urls: [],
   feeds: [],
@@ -58,9 +58,8 @@ export default () => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const url = formData.get("url");
-    const { urls } = state;
 
-    validate(url, urls)
+    validate(url, watchedState.urls)
       .then((url) => {
         watchedState.urls.push(url);
         watchedState.form.errors = [];
@@ -76,7 +75,18 @@ export default () => {
       })
       .catch((err) => {
         watchedState.form.state = "failed";
-        watchedState.form.errors.push(err.type);
+
+        if (err.type === 'url') {
+          watchedState.form.errors = 'url';
+        } else if (err.type === 'notOneOf') {
+          watchedState.form.errors = 'notOneOf';
+        }
+        else if (err.code === 'ERR_NETWORK') {
+          watchedState.form.errors = 'network'
+          console.log(err);
+        } else if (err.name === 'parseError') {
+          watchedState.form.errors = err.name;
+        }
       });
   });
   

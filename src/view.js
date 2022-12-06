@@ -84,7 +84,9 @@ const messages = {
   url: "Ссылка должна быть валидным URL",
   notOneOf: "RSS уже существует",
   success: "RSS успешно загружен",
-  sending: "Идёт загрузка..."
+  sending: "Идёт загрузка...",
+  network: 'Ошибка сети',
+  parseError: 'Ресурс не содержит валидный RSS',
 };
 
 const clear = () => {
@@ -96,7 +98,6 @@ const clear = () => {
 };
 
 const FormMachine = {
-  
     filling: {
       render: () => {
         clear();
@@ -149,7 +150,7 @@ export default () => (path, value) => {
       FormMachine[value].render();
       break;
     case "form.errors":
-      FormMachine.failed.render();
+      FormMachine.failed.render(value);
       break;
     case "feeds":
       renderFeeds(value);
