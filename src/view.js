@@ -32,14 +32,17 @@ const createPost = (post) => {
   const postElement = templatePostElement.content.cloneNode(true);
   const linkEl = postElement.querySelector("a");
   const buttonEl = postElement.querySelector("button");
+
+  linkEl.textContent = title;
+  linkEl.href = link;
+  linkEl.setAttribute('data-id', id);
+
   buttonEl.addEventListener("click", () => {
     const modal = getModal(id, link);
     modal.title.textContent = title;
-    modal.body.textContent = `${description}`;
+    modal.body.textContent = description;
   });
-  linkEl.textContent = title;
-  linkEl.href = link;
-
+  
   return postElement;
 };
 
@@ -53,7 +56,6 @@ const renderFeeds = (feeds) => {
 };
 
 const renderPosts = (posts) => {
-  console.log(posts);
   postsContainer.innerHTML = "";
   const postsWrapper = templatePost.content.cloneNode(true);
   const postList = postsWrapper.querySelector("ul");
@@ -62,11 +64,20 @@ const renderPosts = (posts) => {
   postsContainer.append(postsWrapper);
 };
 
+const renderVisistedPosts = (visitedPostsId) => {
+  visitedPostsId.forEach((id) => {
+    const a = document.querySelector(`a[data-id="${id}"]`);
+    a.classList.remove('fw-bold');
+    a.classList.add('fw-normal', 'link-secondary');
+  })
+} 
+
 export const elements = {
   form: document.querySelector(".rss-form"),
   input: document.getElementById("url-input"),
   button: document.querySelector('[aria-label="add"]'),
-  feedback: document.querySelector(".feedback")
+  feedback: document.querySelector(".feedback"),
+  posts: document.querySelector('.posts')
 };
 
 const messages = {
@@ -85,7 +96,7 @@ const clear = () => {
 };
 
 const FormMachine = {
-  transitions: {
+  
     filling: {
       render: () => {
         clear();
@@ -101,7 +112,7 @@ const FormMachine = {
       }
     },
     success: {
-      render: (feeds) => {
+      render: () => {
         clear();
         elements.input.focus();
         elements.form.reset();
@@ -117,7 +128,6 @@ const FormMachine = {
         elements.feedback.textContent = messages[err];
       }
     }
-  }
 };
 
 export const renderText = (elements, i18next) => {
@@ -136,10 +146,10 @@ export const renderText = (elements, i18next) => {
 export default () => (path, value) => {
   switch (path) {
     case "form.state":
-      FormMachine.transitions[value].render();
+      FormMachine[value].render();
       break;
     case "form.errors":
-      FormMachine.transitions.failed.render();
+      FormMachine.failed.render();
       break;
     case "feeds":
       renderFeeds(value);
@@ -147,6 +157,8 @@ export default () => (path, value) => {
     case "posts":
       renderPosts(value);
       break;
+    case "visitedPostsId": 
+      renderVisistedPosts(value);
     default:
       break;
   }

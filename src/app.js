@@ -21,7 +21,8 @@ export const state = {
   },
   urls: [],
   feeds: [],
-  posts: []
+  posts: [],
+  visitedPostsId: [],
 };
 
 const i18next = i18n.createInstance();
@@ -78,4 +79,13 @@ export default () => {
         watchedState.form.errors.push(err.type);
       });
   });
+  
+  elements.posts.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    if (!evt.target.hasAttribute('data-id')) {
+      return false;
+    };
+    const currentPostId = evt.target.dataset.id;
+    watchedState.visitedPostsId.push(currentPostId);
+  })
 };
