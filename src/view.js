@@ -46,6 +46,10 @@ const createPost = (post) => {
   return postElement;
 };
 
+const renderModal = (post) => {
+  console.log(post)
+}
+
 const renderFeeds = (feeds) => {
   feedsContainer.innerHTML = '';
   const feedWrapper = templateFeed.content.cloneNode(true);
@@ -85,8 +89,8 @@ const messages = {
   notOneOf: 'RSS уже существует',
   success: 'RSS успешно загружен',
   sending: 'Идёт загрузка...',
-  network: 'Ошибка сети',
-  parseError: 'Ресурс не содержит валидный RSS',
+  network: 'Ресурс не содержит валидный RSS',
+  // parseError: 'Ресурс не содержит валидный RSS',
 };
 
 const clear = () => {
@@ -165,6 +169,8 @@ export default () => (path, value) => {
       break;
     case 'visitedPostsId':
       renderVisistedPosts(value);
+    case 'modalId':
+      renderModal(value)
     default:
       break;
   }

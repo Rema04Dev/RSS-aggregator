@@ -22,7 +22,7 @@ export const state = {
   feeds: [],
   posts: [],
   visitedPostsId: [],
-  modalId: '', 
+  modal: null, 
 };
 
 const i18next = i18n.createInstance();
@@ -44,6 +44,11 @@ RuBtn.addEventListener('click', () => {
 });
 
 const buildProxyURL = (url) => {
+  // const proxiedUrl = new URL('https://allorigins.hexlet.app/get');
+  // proxiedUrl.searchParams.set('disableCache', 'true');
+  // proxiedUrl.searchParams.set('url', url);
+  // return proxiedUrl;
+
   const proxyUrl = 'https://allorigins.hexlet.app/raw?url=https://';
   const parsedUrl = new URL(url);
   const { host, pathname } = parsedUrl;
@@ -67,26 +72,22 @@ export default () => {
         return fetchRSS(url);
       })
       .then((RSS) => {
-        setTimeout(() => {
           const data = parseRSS(RSS);
           watchedState.feeds.unshift(data.feed);
           watchedState.posts = [...data.posts, ...watchedState.posts];
           watchedState.form.errors = [];
           watchedState.form.state = 'success';
-        }, 2000)
-        
       })
       .catch((err) => {
         watchedState.form.state = 'failed';
-
         if (err.type === 'url') {
           watchedState.form.errors = 'url';
         } else if (err.type === 'notOneOf') {
           watchedState.form.errors = 'notOneOf';
         } else if (err.code === 'ERR_NETWORK') {
           watchedState.form.errors = 'network';
-        } else if (err.name === 'parseError') {
-          watchedState.form.errors = err.name;
+        } else if (err.isParsingError) {
+          watchedState.form.errors = 'parseError'
         }
       });
   });
@@ -102,8 +103,8 @@ export default () => {
     }
     if (evt.target.hasAttribute('data-bs-toggle')) {
       watchedState.currentPostId = evt.target.dataset.id;
+      watchedState.modal = watchedState.posts.find(currentPostId);
     }
-    
   });
 
   // data-bs-toggle="modal"

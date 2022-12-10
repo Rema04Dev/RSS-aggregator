@@ -3,13 +3,11 @@ import _ from 'lodash';
 export default (xml) => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(xml.data, 'text/xml');
-  if (doc.querySelector('parsererror')) {
-    const err = new Error({
-      name: 'parseError',
-      message: 'Invalid RSS',
-      hasError: true,
-    });
-    throw err;
+  const parseError = doc.querySelector('parsererror');
+  if (parseError) {
+    const error = new Error(parseError.textContent);
+    error.isParsingError = true;
+    throw error;
   }
   const feedTitle = doc.querySelector('title');
   const feedDescription = doc.querySelector('description');
