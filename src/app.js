@@ -22,7 +22,7 @@ export const state = {
   feeds: [],
   posts: [],
   visitedPostsId: [],
-  modal: null,
+  currentPostId: 0,
 };
 
 const i18next = i18n.createInstance();
@@ -93,19 +93,18 @@ export default () => {
   });
 
   elements.posts.addEventListener('click', (evt) => {
-    if (!evt.target.hasAttribute('data-id') && !evt.target.hasAttribute('data-bs-toggle')) {
+    if (!evt.target.hasAttribute('data-id') && !evt.target.hasAttribute('data-toggle')) {
       return false;
     }
     if (evt.target.hasAttribute('data-id')) {
       const currentPostId = evt.target.dataset.id;
       watchedState.visitedPostsId.push(currentPostId);
-      return;
+      // return;
     }
-    if (evt.target.hasAttribute('data-bs-toggle')) {
-      watchedState.currentPostId = evt.target.dataset.id;
-      watchedState.modal = watchedState.posts.find(currentPostId);
+
+    if (evt.target.hasAttribute('data-toggle')) {
+      watchedState.currentPostId = Number(evt.target.dataset.id);
+      // return
     }
   });
-
-  // data-bs-toggle="modal"
 };

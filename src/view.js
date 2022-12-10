@@ -15,17 +15,16 @@ const createFeed = (feed) => {
   return feedElement;
 };
 
-const createModal = ({
-  id, title, description, link,
-}) => {
+const createModal = (post) => {
   const modal = templateModal.content.querySelector('.modal').cloneNode(true);
-  modal.setAttribute('id', id);
+  // modal.setAttribute('id', id);
   const modalTitle = modal.querySelector('.modal-title');
   const modalBody = modal.querySelector('.modal-body');
   const modalLink = modal.querySelector('a');
 
-  modalTitle.textContent = title;
-  modalBody.textContent = description;
+  // const currentPost = state.posts.find(({ id }) => id === state.currentPostId);
+  modalTitle.textContent = post.title;
+  modalBody.textContent = post.description;
   modalLink.setAttribute('href', link);
 
   return modal;
@@ -40,16 +39,11 @@ const createPost = (post) => {
   linkEl.textContent = title;
   linkEl.href = link;
   linkEl.setAttribute('data-id', id);
-  buttonEl.addEventListener('click', (evt) => {
-    const modal = createModal(post);
-    document.body.append(modal);
-    console.log(modal);
-  });
   return postElement;
 };
 
-const renderModal = (post) => {
-  console.log(post);
+const renderModal = (postId) => {
+  console.log(postId)
 };
 
 const renderFeeds = (feeds) => {
@@ -171,8 +165,9 @@ export default () => (path, value) => {
       break;
     case 'visitedPostsId':
       renderVisistedPosts(value);
-    case 'modalId':
-      renderModal(value);
+    case 'currentPostId':
+      console.log(value)
+      // renderModal(value);
     default:
       break;
   }
