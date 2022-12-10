@@ -15,8 +15,10 @@ const createFeed = (feed) => {
   return feedElement;
 };
 
-const createModal = ({id, title, description, link} ) => {
-  const modal = templateModal.content.querySelector('.modal').cloneNode(true)
+const createModal = ({
+  id, title, description, link,
+}) => {
+  const modal = templateModal.content.querySelector('.modal').cloneNode(true);
   modal.setAttribute('id', id);
   const modalTitle = modal.querySelector('.modal-title');
   const modalBody = modal.querySelector('.modal-body');
@@ -27,7 +29,7 @@ const createModal = ({id, title, description, link} ) => {
   modalLink.setAttribute('href', link);
 
   return modal;
-}
+};
 const createPost = (post) => {
   const { id, title, link } = post;
   const postElement = templatePostElement.content.cloneNode(true);
@@ -41,14 +43,14 @@ const createPost = (post) => {
   buttonEl.addEventListener('click', (evt) => {
     const modal = createModal(post);
     document.body.append(modal);
-    console.log(modal)
-  })
+    console.log(modal);
+  });
   return postElement;
 };
 
 const renderModal = (post) => {
-  console.log(post)
-}
+  console.log(post);
+};
 
 const renderFeeds = (feeds) => {
   feedsContainer.innerHTML = '';
@@ -170,7 +172,7 @@ export default () => (path, value) => {
     case 'visitedPostsId':
       renderVisistedPosts(value);
     case 'modalId':
-      renderModal(value)
+      renderModal(value);
     default:
       break;
   }

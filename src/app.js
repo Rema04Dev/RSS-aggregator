@@ -22,7 +22,7 @@ export const state = {
   feeds: [],
   posts: [],
   visitedPostsId: [],
-  modal: null, 
+  modal: null,
 };
 
 const i18next = i18n.createInstance();
@@ -72,11 +72,11 @@ export default () => {
         return fetchRSS(url);
       })
       .then((RSS) => {
-          const data = parseRSS(RSS);
-          watchedState.feeds.unshift(data.feed);
-          watchedState.posts = [...data.posts, ...watchedState.posts];
-          watchedState.form.errors = [];
-          watchedState.form.state = 'success';
+        const data = parseRSS(RSS);
+        watchedState.feeds.unshift(data.feed);
+        watchedState.posts = [...data.posts, ...watchedState.posts];
+        watchedState.form.errors = [];
+        watchedState.form.state = 'success';
       })
       .catch((err) => {
         watchedState.form.state = 'failed';
@@ -87,7 +87,7 @@ export default () => {
         } else if (err.code === 'ERR_NETWORK') {
           watchedState.form.errors = 'network';
         } else if (err.isParsingError) {
-          watchedState.form.errors = 'parseError'
+          watchedState.form.errors = 'parseError';
         }
       });
   });
