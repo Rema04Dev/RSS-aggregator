@@ -5,6 +5,8 @@ export default {
     placeholder: 'RSS link',
     example: 'Example https://ru.hexlet.io/lessons.rss',
     button: 'Add',
+    feedsTitle: 'Feeds',
+    postsTitle: 'Posts',
     messages: {
       url: 'The link must be a valid URL',
       notOneOf: 'Should not be empty',
