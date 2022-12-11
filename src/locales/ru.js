@@ -8,8 +8,8 @@ export default {
     feedsTitle: 'Фиды',
     postsTitle: 'Посты',
     messages: {
-      url: 'Ссылка должна быть валидным URL',
-      notOneOf: 'RSS уже существует',
+      mustBeValid: 'Ссылка должна быть валидным URL',
+      linkExists: 'RSS уже существует',
       success: 'RSS успешно загружен',
       sending: 'Идёт загрузка RSS...',
     },

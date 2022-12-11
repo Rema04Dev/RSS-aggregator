@@ -8,8 +8,8 @@ export default {
     feedsTitle: 'Feeds',
     postsTitle: 'Posts',
     messages: {
-      url: 'The link must be a valid URL',
-      notOneOf: 'Should not be empty',
+      mustBeValid: 'The link must be a valid URL',
+      linkExists: 'Should not be empty',
       success: 'RSS uploaded successfully',
       sending: 'RSS loading...',
     },
