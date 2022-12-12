@@ -62,9 +62,9 @@ export default () => {
   });
 
   const watchedState = onChange(state, render(elements, i18next));
-  elements.form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
+  elements.form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const formData = new FormData(evt.target);
     const url = formData.get('url');
 
     validate(url, watchedState.urls)
@@ -75,11 +75,11 @@ export default () => {
         return fetchRSS(urlRSS);
       })
       .then((RSS) => {
-        const data = parseRSS(RSS);
-        watchedState.feeds.unshift(data.feed);
-        watchedState.posts = [...data.posts, ...watchedState.posts];
-        watchedState.form.errors = '';
-        watchedState.form.state = 'success';
+          const data = parseRSS(RSS);
+          watchedState.feeds.unshift(data.feed);
+          watchedState.posts = [...data.posts, ...watchedState.posts];
+          watchedState.form.errors = '';
+          watchedState.form.state = 'success';
       })
       .catch((err) => {
         watchedState.form.state = 'failed';
@@ -88,9 +88,6 @@ export default () => {
           return;
         }
         watchedState.form.errors = err.message;
-        // } else if (err.isParsingError) {
-        //   watchedState.form.errors = "parseError";
-        // }
       });
   });
 
@@ -98,7 +95,6 @@ export default () => {
     if (evt.target.hasAttribute('data-id')) {
       const currentPostId = evt.target.dataset.id;
       watchedState.visitedPostsId.push(currentPostId);
-      return;
     }
 
     if (evt.target.hasAttribute('data-toggle')) {
