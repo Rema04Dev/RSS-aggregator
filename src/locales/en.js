@@ -9,7 +9,8 @@ export default {
     postsTitle: 'Posts',
     messages: {
       mustBeValid: 'The link must be a valid URL',
-      network: 'The link must be a valid URL',
+      network: 'Network error...',
+      rss: 'The resource does not contain valid RSS',
       linkExists: 'Should not be empty',
       success: 'RSS uploaded successfully',
       sending: 'RSS loading...',

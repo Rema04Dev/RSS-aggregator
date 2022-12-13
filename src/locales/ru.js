@@ -9,7 +9,8 @@ export default {
     postsTitle: 'Посты',
     messages: {
       mustBeValid: 'Ссылка должна быть валидным URL',
-      network: 'Ссылка должна быть валидным URL',
+      network: 'Ошибка сети...',
+      rss: 'Ресурс не содержит валидный RSS',
       linkExists: 'RSS уже существует',
       success: 'RSS успешно загружен',
       sending: 'Идёт загрузка RSS...',
