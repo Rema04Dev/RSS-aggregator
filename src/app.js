@@ -1,8 +1,7 @@
 import * as yup from 'yup';
-import onChange from 'on-change';
-import i18n from 'i18next';
+import i18next from 'i18next';
 import axios from 'axios';
-import render from './view';
+import watch from './view';
 import resources from './locales/index';
 import parseRSS from './parseRSS';
 
@@ -15,7 +14,9 @@ const validate = (url, urls) => yup
   .notOneOf(urls, 'linkExists')
   .validate(url);
 
-const buildProxyURL = (url) => `https://allorigins.hexlet.app/get?disableCache=true&url=
+const buildProxyURL = (
+  url,
+) => `https://allorigins.hexlet.app/get?disableCache=true&url=
   ${encodeURIComponent(url)}`;
 
 const fetchRSS = (url) => axios.get(buildProxyURL(url));
@@ -34,9 +35,16 @@ export default () => {
     modalBody: document.querySelector('.modal-body'),
     modalLink: document.querySelector('.modalLink'),
     localesBtnGroup: document.querySelector('.btn-group'),
+    feedsContainer: document.querySelector('.feeds'),
+    postsContainer: document.querySelector('.posts'),
+
+    templateFeed: document.querySelector('#template-feeds-wrapper'),
+    templateFeedElement: document.querySelector('#template-feed-element'),
+    templatePost: document.querySelector('#template-posts-wrapper'),
+    templatePostElement: document.querySelector('#template-post-element'),
   };
 
-  const state = {
+  const initialState = {
     form: {
       state: 'filling',
       errors: '',
@@ -49,14 +57,14 @@ export default () => {
     currentPost: null,
   };
 
-  const i18next = i18n.createInstance();
-  i18next.init({
+  const i18nextInstance = i18next.createInstance();
+  i18nextInstance.init({
     lng: defaulltLng,
     debug: false,
     resources,
   });
 
-  const watchedState = onChange(state, render(elements, i18next));
+  const watchedState = watch(initialState, elements, i18nextInstance);
   elements.form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const formData = new FormData(evt.target);

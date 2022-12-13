@@ -1,3 +1,5 @@
+import onChange from 'on-change';
+
 const renderText = (elements, i18next) => {
   const { form, button } = elements;
   const title = document.querySelector('.title');
@@ -21,57 +23,55 @@ const changeLng = (elements, value, i18next) => {
     renderText(elements, i18next);
   });
 };
-const feedsContainer = document.querySelector('.feeds');
-const postsContainer = document.querySelector('.posts');
 
-const templateFeed = document.querySelector('#template-feeds-wrapper');
-const templateFeedElement = document.querySelector('#template-feed-element');
-const templatePost = document.querySelector('#template-posts-wrapper');
-const templatePostElement = document.querySelector('#template-post-element');
+const renderFeeds = (feeds, elements, i18next) => {
+  const { feedsContainer, templateFeed, templateFeedElement } = elements;
 
-const createFeed = (feed) => {
-  const { title, description } = feed;
-  const feedElement = templateFeedElement.content.cloneNode(true);
-  feedElement.querySelector('.feed-title').textContent = title;
-  feedElement.querySelector('.feed-description').textContent = description;
-  return feedElement;
-};
+  const feedsElements = feeds.map((feed) => {
+    const { title, description } = feed;
+    const feedElement = templateFeedElement.content.cloneNode(true);
+    feedElement.querySelector('.feed-title').textContent = title;
+    feedElement.querySelector('.feed-description').textContent = description;
+    return feedElement;
+  });
 
-const createPost = (post) => {
-  const { id, title, link } = post;
-  const postElement = templatePostElement.content.cloneNode(true);
-  const linkEl = postElement.querySelector('a');
-  const buttonEl = postElement.querySelector('.btn');
-
-  linkEl.textContent = title;
-  linkEl.href = link;
-
-  buttonEl.setAttribute('data-id', id);
-  buttonEl.setAttribute('data-bs-toggle', 'modal');
-  buttonEl.setAttribute('data-bs-target', '#modal');
-  linkEl.setAttribute('data-id', id);
-
-  return postElement;
-};
-
-const renderFeeds = (feeds, i18next) => {
-  feedsContainer.innerHTML = '';
   const feedWrapper = templateFeed.content.cloneNode(true);
   const title = feedWrapper.querySelector('.card-title');
-  title.textContent = i18next.t('feedsTitle');
   const feedList = feedWrapper.querySelector('ul');
-  const feedsElements = feeds.map((feed) => createFeed(feed));
+
+  title.textContent = i18next.t('feedsTitle');
+  feedsContainer.innerHTML = '';
+
   feedList.append(...feedsElements);
   feedsContainer.append(feedWrapper);
 };
 
-const renderPosts = (posts, i18next) => {
-  postsContainer.innerHTML = '';
+const renderPosts = (posts, elements, i18next) => {
+  const { postsContainer, templatePost, templatePostElement } = elements;
+
+  const postsElements = posts.map((post) => {
+    const { id, title, link } = post;
+    const postElement = templatePostElement.content.cloneNode(true);
+    const linkEl = postElement.querySelector('a');
+    const buttonEl = postElement.querySelector('.btn');
+
+    linkEl.textContent = title;
+    linkEl.href = link;
+    buttonEl.setAttribute('data-id', id);
+    buttonEl.setAttribute('data-bs-toggle', 'modal');
+    buttonEl.setAttribute('data-bs-target', '#modal');
+    linkEl.setAttribute('data-id', id);
+
+    return postElement;
+  });
+
   const postsWrapper = templatePost.content.cloneNode(true);
-  const title = postsWrapper.querySelector('.card-title');
-  title.textContent = i18next.t('postsTitle');
   const postList = postsWrapper.querySelector('ul');
-  const postsElements = posts.map(createPost);
+  const title = postsWrapper.querySelector('.card-title');
+
+  title.textContent = i18next.t('postsTitle');
+  postsContainer.innerHTML = '';
+
   postList.append(...postsElements);
   postsContainer.append(postsWrapper);
 };
@@ -89,13 +89,14 @@ const renderModal = (post) => {
     id, title, description, link,
   } = post;
   const modal = document.querySelector('.modal');
-  modal.setAttribute('id', id);
   const titleEl = modal.querySelector('.modal-title');
   const bodyEl = modal.querySelector('.modal-body');
   const linkEl = modal.querySelector('.modal-link');
 
   titleEl.textContent = title;
   bodyEl.textContent = description;
+
+  modal.setAttribute('id', id);
   linkEl.setAttribute('href', link);
 };
 
@@ -140,24 +141,24 @@ const FormStateHandler = {
   },
 };
 
-const render = (elements, i18next) => (path, value) => {
+const watch = (state, elements, i18nextInstance) => onChange(state, (path, value) => {
   switch (path) {
     case 'form.state':
       clear(elements);
-      FormStateHandler[value](elements, i18next);
+      FormStateHandler[value](elements, i18nextInstance);
       break;
     case 'form.errors':
       clear(elements);
-      FormStateHandler.failed(value, elements, i18next);
+      FormStateHandler.failed(value, elements, i18nextInstance);
       break;
     case 'feeds':
-      renderFeeds(value, i18next);
+      renderFeeds(value, elements, i18nextInstance);
       break;
     case 'posts':
-      renderPosts(value, i18next);
+      renderPosts(value, elements, i18nextInstance);
       break;
     case 'lng':
-      changeLng(elements, value, i18next);
+      changeLng(elements, value, i18nextInstance);
       break;
     case 'visitedPostsId':
       renderVisistedPosts(value);
@@ -170,6 +171,6 @@ const render = (elements, i18next) => (path, value) => {
       console.log('Мимо всех');
       break;
   }
-};
+});
 
-export default render;
+export default watch;
