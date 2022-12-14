@@ -33,7 +33,7 @@ export default () => {
     modal: document.querySelector('.modal'),
     modalTitle: document.querySelector('.modal-title'),
     modalBody: document.querySelector('.modal-body'),
-    modalLink: document.querySelector('.modalLink'),
+    modalLink: document.querySelector('.modal-link'),
     localesBtnGroup: document.querySelector('.btn-group'),
     feedsContainer: document.querySelector('.feeds'),
     postsContainer: document.querySelector('.posts'),
@@ -47,7 +47,7 @@ export default () => {
   const initialState = {
     form: {
       state: 'filling',
-      errors: '',
+      errors: null,
     },
     lng: 'ru',
     urls: [],
@@ -86,10 +86,10 @@ export default () => {
       })
       .catch((err) => {
         watchedState.form.state = 'failed';
-        if (err.code === 'ERR_NETWORK') {
-          watchedState.form.errors = 'network';
-          return;
-        }
+        // if (err.code === 'ERR_NETWORK') {
+        //   watchedState.form.errors = 'network';
+        //   return;
+        // }
         watchedState.form.errors = err.message;
       });
   });
