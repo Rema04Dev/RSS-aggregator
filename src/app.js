@@ -113,23 +113,22 @@ export default () => {
     watchedState.lng = language;
   });
 
-  // const updatePosts = () => {
-  //   console.log(watchedState.posts);
-  //   const urls = watchedState.feeds.map((feed) => feed.url);
+  // const updateRssPosts = () => {
+  //   const urls = watchedState.feeds.map((feed) => feed.link);
   //   const promises = urls
   //     .map((url) => fetchRSS(url)
-  //       .then((updatedRSS) => {
-  //         const updatedParsedContent = parseRSS(updatedRSS.data.contents);
-  //         const newPosts = updatedParsedContent.posts;
+  //       .then((updatedResponse) => {
+  //         const updatedParsedContent = parseRSS(updatedResponse.data.contents);
+  //         const { posts: newPosts } = updatedParsedContent;
   //         const addedPostsLinks = watchedState.posts.map((post) => post.link);
   //         const addedNewPosts = newPosts.filter((post) => !addedPostsLinks.includes(post.link));
-  //         watchedState.posts = [addedNewPosts, ...watchedState.posts]
+  //         watchedState.posts = addedNewPosts.concat(watchedState.posts);
   //       })
   //       .catch((err) => {
   //         throw err;
   //       }));
   //   Promise.all(promises)
-  //     .finally(() => setTimeout(() => updatePosts(), 2000));
+  //     .finally(() => setTimeout(() => updateRssPosts(), 5000));
   // };
-  // updatePosts();
+  // updateRssPosts();
 };
