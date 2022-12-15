@@ -93,7 +93,7 @@ const renderModal = (post) => {
   bodyEl.textContent = description;
 
   // modal.setAttribute("id", id);
-  // linkEl.setAttribute("href", link);
+  linkEl.setAttribute("href", link);
 };
 
 const clear = (elements) => {
