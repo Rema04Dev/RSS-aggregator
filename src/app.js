@@ -135,9 +135,8 @@ export default () => {
       })
       .catch((e) => console.log(e.message));
 
-    Promise.all(promises).finally(() => setInterval(() => updatePosts(), 5000))
+    Promise.all(promises).finally(() => setInterval(() => updatePosts(), 5000));
   };
 
   updatePosts();
-
 };
