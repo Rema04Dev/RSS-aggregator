@@ -120,48 +120,23 @@ export default () => {
     watchedState.lng = language;
   });
 
-  const testUrls = [
-    "https://ru.hexlet.io/lessons.rss",
-    "http://feeds.bbci.co.uk/news/world/rss.xml",
-  ];
+  const updatePosts = () => {
+    const promises = watchedState.urls.map((url) => {
+      fetchRSS(url)
+        .then((response) => {
+          const updatedData = parseRSS(response.data.contents); // получили фид
+          const newPosts = updatedData.posts; // вытащили посты из фида
+          const postLinks = watchedState.posts.map((post) => post.link); // ссылки уже имеющихся постов
+          const addedPosts = newPosts.filter(
+            (post) => !postLinks.includes(post.link)
+          ); // отсеяли НОВЫЕ посты которых не было ранее
+          watchedState.posts = addedPosts.concat(...watchedState.posts); // склеили новые посты + имеющиеся
+          console.log(watchedState.posts);
+        })
+        .catch((err) => console.log(err));
+    });
 
-  const testFeeds = [
-    {
-      title: "Новые уроки на Хекслете",
-      description: "Практические уроки по программированию",
-      link: "https://ru.hexlet.io/",
-    },
-  ];
-
-  const testPosts = [
-    {
-      id: "1",
-      title: "Наглядные примеры / Как проектировать классные уроки",
-      description:
-        "Цель: Учимся объяснять абстрактную теорию на примерах из жизни",
-      link: "https://ru.hexlet.io/courses/awesome-text-structure/lessons/examples/theory_unit",
-    },
-    {
-      id: "2",
-      title: "Malaysia landslide: At least 16 campers dead and more missing",
-      description:
-        "The landslide struck a campsite where more than 90 people were sleeping in the middle of the night.",
-      link: "https://www.bbc.co.uk/news/world-asia-63995931?at_medium=RSS&at_campaign=KARANGA",
-    },
-  ];
-  const promises = testUrls.map((url) => fetchRSS(url))
-    .then((response) => {
-      console.log(response)
-      // const updatedData = parseRSS(response.data.contents);
-      // const newPosts = updatedData.posts;
-      // const postLinks = testPosts.map((post) => post.link);
-      // const addedPosts = newPosts.filter(
-      //   (post) => !postLinks.includes(post.link)
-      // );
-      // const updatedPosts = addedPosts.concat(...testPosts);
-      // console.log(updatedPosts);
-    })
-    .catch((e) => console.log(e))
-
-    const promise = Promise.all(promises);
+    Promise.all(promises).finally(() => setInterval(() => updatePosts(), 5000));
+  };
+  updatePosts();
 };
