@@ -50,7 +50,7 @@ export default () => {
       errors: null,
     },
     lng: 'ru',
-    urls: [],
+    // urls: [],
     feeds: [],
     posts: [],
     visitedPostsId: [],
@@ -69,8 +69,9 @@ export default () => {
     evt.preventDefault();
     const formData = new FormData(evt.target);
     const url = formData.get('url');
+    const urls = watchedState.feeds.map((feed) => feed.url);
     /* eslint no-param-reassign: ["error", { "props": false }] */
-    validate(url, watchedState.urls)
+    validate(url, urls)
       .then((urlRSS) => {
         watchedState.form.errors = '';
         watchedState.form.state = 'sending';
@@ -88,8 +89,6 @@ export default () => {
           post.id = _.uniqueId();
           post.feedId = data.feed.id;
         });
-        watchedState.urls.push(url);
-
         watchedState.form.errors = '';
         watchedState.form.state = 'success';
       })
