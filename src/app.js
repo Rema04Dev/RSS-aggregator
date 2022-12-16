@@ -122,8 +122,7 @@ export default () => {
 
   const updatePosts = () => {
     const { urls } = watchedState;
-    console.log(urls);
-    axios.get(buildProxyURL('http://feeds.bbci.co.uk/news/world/rss.xml'))
+    const promises = urls.map((url) => fetchRSS(url))
       .then((response) => {
         const updatedData = parseRSS(response.data.contents);
         const newPosts = updatedData.posts;
@@ -136,28 +135,9 @@ export default () => {
       })
       .catch((e) => console.log(e.message));
 
-    // setInterval(() => updatePosts(), 5000);
+    Promise.all(promises).finally(() => setInterval(() => updatePosts(), 5000))
   };
 
   updatePosts();
 
-  // const updateRssPosts = () => {
-  //   const urls = watchedState.url;
-  //   const promises = urls
-  //     .map((url) => fetchRSS(url)
-  //       .then((updatedResponse) => {
-  //         const updatedParsedContent = parseRSS(updatedResponse.data.contents);
-  //         const { posts: newPosts } = updatedParsedContent;
-  //         const addedPostsLinks = watchedState.posts.map((post) => post.link);
-  //         const addedNewPosts = newPosts.filter((post) => !addedPostsLinks.includes(post.link));
-  //         watchedState.posts = addedNewPosts.concat(watchedState.posts);
-  //         console.log(watchedState.posts)
-  //       })
-  //       .catch((err) => {
-  //         throw err;
-  //       }));
-  //   Promise.all(promises)
-  //     .finally(() => setTimeout(() => updateRssPosts(), 5000));
-  // };
-  // updateRssPosts();
 };
