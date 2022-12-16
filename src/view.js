@@ -92,7 +92,7 @@ const renderModal = (post) => {
   titleEl.textContent = title;
   bodyEl.textContent = description;
 
-  // modal.setAttribute("id", id);
+  modal.setAttribute("data-id", id);
   linkEl.setAttribute("href", link);
 };
 
@@ -115,7 +115,7 @@ const processHandler = (status, elements, i18next) => {
       elements.input.focus();
       break;
     case "sending":
-      form.reset();
+      input.focus();
       input.disabled = true;
       button.disabled = true;
       feedback.classList.add("text-warning");

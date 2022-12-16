@@ -10,10 +10,11 @@ export default {
     messages: {
       mustBeValid: 'Ссылка должна быть валидным URL',
       network: 'Ошибка сети...',
-      rss: 'Ресурс не содержит валидный RSS',
+      invalidRSS: 'Ресурс не содержит валидный RSS',
       linkExists: 'RSS уже существует',
       success: 'RSS успешно загружен',
       sending: 'Идёт загрузка RSS...',
+      emptyField: 'Поле не должно быть пустым',
     },
   },
 };

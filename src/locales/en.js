@@ -10,10 +10,11 @@ export default {
     messages: {
       mustBeValid: 'The link must be a valid URL',
       network: 'Network error...',
-      rss: 'The resource does not contain valid RSS',
+      invalidRSS: 'The resource does not contain valid RSS',
       linkExists: 'Should not be empty',
       success: 'RSS uploaded successfully',
       sending: 'RSS loading...',
+      emptyField: 'Field should be filled',
     },
   },
 };
