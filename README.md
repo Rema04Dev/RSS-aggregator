@@ -4,12 +4,16 @@
 
 # <img src="https://plumanalytics.com/wp-content/uploads/2016/07/RSS.png" style="display: inline-block; width: 25px"> RSS aggregator
 
-## Description 
---- 
+## Description
+
+---
+
 Rss Reader is a service for aggregating RSS feeds that makes it easy to read a variety of sources. It allows you to add an unlimited number of RSS feeds, updates them and adds new entries to the total stream.
 
 ## Install
+
 ###### system requirements: node 14.x version at least
+
 ```bash
 #clone this repository on your machine
 $git clone git@github.com:Rema04Dev/RSS-aggregator.git
@@ -19,9 +23,14 @@ $cd RSS-aggregator
 $make install
 or
 $npm ci
-#run application
-$npm run build #build
-$npm run serve #run application on localhost
+
+#build application
+$npm run build
+
+#run application on localhost
+$npm run serve
+or
+$make run
 ```
 
 ### [Demonstration](https://rss-aggregator-iota.vercel.app/)
