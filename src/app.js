@@ -120,7 +120,11 @@ export default () => {
     watchedState.lng = language;
   });
 
-  const testUrls = ["https://ru.hexlet.io/lessons.rss"];
+  const testUrls = [
+    "https://ru.hexlet.io/lessons.rss",
+    "http://feeds.bbci.co.uk/news/world/rss.xml",
+  ];
+
   const testFeeds = [
     {
       title: "Новые уроки на Хекслете",
@@ -139,35 +143,25 @@ export default () => {
     },
     {
       id: "2",
-      title: "Подходы к объяснению / Как проектировать классные уроки",
+      title: "Malaysia landslide: At least 16 campers dead and more missing",
       description:
-        "Цель: Разберем подходы к объяснению теории, которые помогают студентам понять тему",
-      link: "https://ru.hexlet.io/courses/awesome-text-structure/lessons/how-to-explain/theory_unit",
-    },
-    {
-      id: "3",
-      title: "Основные блоки внутри урока / Как проектировать классные уроки",
-      description:
-        "Цель: Изучаем, какими должны быть введение, теория, заключение и дополнительные материалы",
-      link: "https://ru.hexlet.io/courses/awesome-text-structure/lessons/lesson-structure/theory_unit",
+        "The landslide struck a campsite where more than 90 people were sleeping in the middle of the night.",
+      link: "https://www.bbc.co.uk/news/world-asia-63995931?at_medium=RSS&at_campaign=KARANGA",
     },
   ];
-  const updatePosts = () => {
-      fetchRSS('https://ru.hexlet.io/lessons.rss')
-      .then((response) => {
-        const updatedData = parseRSS(response.data.contents);
-        const newPosts = updatedData.posts;
-        const postLinks = testPosts.map((post) => post.link);
-        const addedPosts = newPosts.filter(
-          (post) => !postLinks.includes(post.link)
-        );
-        const updatedPosts = addedPosts.concat(...testPosts);
-        console.log(updatedPosts);
-      })
-      .catch((e) => console.log(e.message));
+  const promises = testUrls.map((url) => fetchRSS(url))
+    .then((response) => {
+      console.log(response)
+      // const updatedData = parseRSS(response.data.contents);
+      // const newPosts = updatedData.posts;
+      // const postLinks = testPosts.map((post) => post.link);
+      // const addedPosts = newPosts.filter(
+      //   (post) => !postLinks.includes(post.link)
+      // );
+      // const updatedPosts = addedPosts.concat(...testPosts);
+      // console.log(updatedPosts);
+    })
+    .catch((e) => console.log(e))
 
-    // Promise.all(promises).finally(() => setInterval(() => updatePosts(), 5000));
-  };
-
-  updatePosts();
+    const promise = Promise.all(promises);
 };
