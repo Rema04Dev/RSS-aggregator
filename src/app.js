@@ -93,8 +93,8 @@ export default () => {
         watchedState.form.state = 'success';
       })
       .catch((err) => {
-        watchedState.form.state = 'failed';
-        watchedState.form.errors = err.message;
+        if (err.message = 'Network Error')
+        watchedState.form.errors = 'network'
       });
   });
 

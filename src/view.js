@@ -45,13 +45,7 @@ const renderFeeds = (feeds, elements, i18next) => {
   feedList.append(...feedsElements);
   feedsContainer.append(feedWrapper);
 };
-// const renderVisistedPosts = (visitedPostsId) => {
-//   visitedPostsId.forEach((id) => {
-//     const link = document.querySelector(`a[data-id="${id}"]`);
-//     link.classList.remove('fw-bold');
-//     link.classList.add('fw-normal', 'link-secondary');
-//   });
-// };
+
 const renderPosts = (state, posts, elements, i18next) => {
   const { postsContainer, templatePost, templatePostElement } = elements;
 
