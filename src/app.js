@@ -52,7 +52,6 @@ export default () => {
       errors: null,
     },
     lng: "ru",
-    // urls: [],
     feeds: [],
     posts: [],
     visitedPostsId: [],
