@@ -138,7 +138,6 @@ const processHandler = (status, elements, i18next) => {
       feedback.textContent = i18next.t('messages.success');
       break;
     default:
-      console.log('Мимо всех');
       break;
   }
 };
@@ -147,7 +146,7 @@ const renderError = (errType, elements, i18next) => {
   const { input, feedback } = elements;
   input.classList.add('is-invalid');
   feedback.classList.add('text-danger');
-  feedback.textContent = i18next.t(`messages.${errType}`);
+  feedback.textContent = errType ? i18next.t(`messages.${errType}`) : '';
 };
 
 const watch = (state, elements, i18nextInstance) => onChange(state, (path, value) => {
