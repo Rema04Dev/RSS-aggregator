@@ -1,6 +1,6 @@
 
 # Name of workflow
-name: Node CI
+name: Linter
 
 # Trigger the workflow on push or pull request
 on:

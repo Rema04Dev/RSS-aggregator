@@ -1,7 +1,6 @@
 [![Actions Status](https://github.com/Rema04Dev/RSS-aggregator/workflows/hexlet-check/badge.svg)](https://github.com/Rema04Dev/RSS-aggregator/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/dc34131b1c83f7513eab/maintainability)](https://codeclimate.com/github/Rema04Dev/RSS-aggregator/maintainability)
-[![Node CI](https://github.com/Rema04Dev/RSS-aggregator/workflows/linter.yml/badge.svg)](https://github.com/Rema04Dev/RSS-aggregator/actions)
-
+[![Linter](https://github.com/Rema04Dev/RSS-aggregator/actions/workflows/linter.yml/badge.svg)](https://github.com/Rema04Dev/RSS-aggregator/actions)
 # <img src="https://plumanalytics.com/wp-content/uploads/2016/07/RSS.png" style="display: inline-block; width: 25px"> RSS aggregator
 
 ## Description
