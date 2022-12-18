@@ -34,4 +34,4 @@ or
 $make run
 ```
 
-### [Demonstration](https://rss-aggregator-rosy.vercel.app/)
+### [Demonstration](https://rss-aggregator-brown.vercel.app/)
