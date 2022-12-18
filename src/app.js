@@ -69,9 +69,7 @@ export default () => {
       case 'Network Error':
         return 'network';
       case 'linkExists':
-        return err.message;
       case 'mustBeValid':
-        return err.message;
       case 'invalidRSS':
         return err.message;
       default:
