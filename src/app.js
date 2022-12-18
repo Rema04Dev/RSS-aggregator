@@ -72,6 +72,8 @@ export default () => {
         return err.message;
       case 'mustBeValid':
         return err.message;
+      case 'invalidRSS':
+        return err.message;
       default:
         return 'unknown';
     }
