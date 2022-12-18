@@ -16,8 +16,10 @@ Rss Reader is a service for aggregating RSS feeds that makes it easy to read a v
 ```bash
 #clone this repository on your machine
 $git clone git@github.com:Rema04Dev/RSS-aggregator.git
+
 #go to directory where you downloaded it
 $cd RSS-aggregator
+
 # run the one of these command to install all necessary dependencies
 $make install
 or
@@ -32,4 +34,4 @@ or
 $make run
 ```
 
-### [Demonstration](https://rss-aggregator-iota.vercel.app/)
+### [Demonstration](https://rss-aggregator-lyart.vercel.app/)
