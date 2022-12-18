@@ -12,6 +12,7 @@ export default {
       network: 'Network error...',
       invalidRSS: 'The resource does not contain valid RSS',
       linkExists: 'Should not be empty',
+      unknown: 'Unknown error',
       success: 'RSS uploaded successfully',
       sending: 'RSS loading...',
       emptyField: 'Field should be filled',
