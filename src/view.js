@@ -151,11 +151,19 @@ const renderError = (errType, elements, i18next) => {
 
 const watch = (state, elements, i18nextInstance) => onChange(state, (path, value) => {
   switch (path) {
-    case 'form.state':
+    case 'form.status':
       clear(elements);
       processHandler(value, elements, i18nextInstance);
       break;
     case 'form.errors':
+      clear(elements);
+      renderError(value, elements, i18nextInstance);
+      break;
+    case 'loadingProcess.status':
+      clear(elements);
+      processHandler(value, elements, i18nextInstance);
+      break;
+    case 'loadingProcess.errors':
       clear(elements);
       renderError(value, elements, i18nextInstance);
       break;

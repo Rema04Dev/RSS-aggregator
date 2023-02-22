@@ -47,7 +47,11 @@ export default () => {
 
   const initialState = {
     form: {
-      state: 'filling',
+      status: 'filling',
+      errors: null,
+    },
+    loadingProcess: {
+      status: 'idle',
       errors: null,
     },
     lng: 'ru',
@@ -64,18 +68,6 @@ export default () => {
     resources,
   });
 
-  const parseError = (err) => {
-    switch (err.message) {
-      case 'Network Error':
-        return 'network';
-      case 'linkExists':
-      case 'mustBeValid':
-      case 'invalidRSS':
-        return err.message;
-      default:
-        return 'unknown';
-    }
-  };
   const watchedState = watch(initialState, elements, i18nextInstance);
   elements.form.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -84,9 +76,14 @@ export default () => {
     const urls = watchedState.feeds.map((feed) => feed.url);
     validate(url, urls)
       .then((urlRSS) => {
-        watchedState.form.errors = '';
-        watchedState.form.state = 'sending';
-        return fetchRSS(urlRSS);
+        watchedState.form.errors = null;
+        watchedState.form.status = 'sending';
+        return urlRSS;
+      })
+      .then((validatedUrl) => {
+        watchedState.loadingProcess.errors = null;
+        watchedState.loadingProcess.status = 'sending';
+        return fetchRSS(validatedUrl);
       })
       .then((response) => {
         const data = parseRSS(response.data.contents);
@@ -102,10 +99,24 @@ export default () => {
           post.feedId = data.feed.id;
         });
         watchedState.form.errors = '';
-        watchedState.form.state = 'success';
+        watchedState.form.status = 'success';
       })
       .catch((err) => {
-        watchedState.form.errors = parseError(err);
+        switch (err.message) {
+          case 'linkExists':
+          case 'mustBeValid':
+            watchedState.form.status = 'failed';
+            watchedState.form.errors = err.message;
+            break;
+          case 'invalidRSS':
+            watchedState.loadingProcess.status = 'failed';
+            watchedState.loadingProcess.errors = err.message;
+            break;
+          case 'Network Error':
+            watchedState.loadingProcess.errors = 'network';
+            break;
+          default: watchedState.loadingProcess.status = 'unknown';
+        }
       });
   });
 
