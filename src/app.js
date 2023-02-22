@@ -109,15 +109,6 @@ export default () => {
       });
   });
 
-  elements.input.addEventListener('invalid', (evt) => {
-    const validityState = evt.target.validity;
-    if (validityState.valueMissing) {
-      evt.target.setCustomValidity(i18nextInstance.t('messages.emptyField'));
-    } else {
-      evt.target.setCustomValidity('');
-    }
-  });
-
   elements.posts.addEventListener('click', (evt) => {
     if (evt.target.hasAttribute('data-id')) {
       const currentPostId = evt.target.dataset.id;
