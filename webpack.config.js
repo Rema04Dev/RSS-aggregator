@@ -56,5 +56,8 @@ module.exports = () => {
   } else {
     config.mode = 'development';
   }
-  return { ...config, resolve: { fallback: { path: false, 'node:path': false } } };
+  return {
+    ...config,
+    resolve: { fallback: { path: false, 'node:path': false } },
+  };
 };

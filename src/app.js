@@ -115,7 +115,8 @@ export default () => {
           case 'Network Error':
             watchedState.loadingProcess.errors = 'network';
             break;
-          default: watchedState.loadingProcess.status = 'unknown';
+          default:
+            watchedState.loadingProcess.status = 'unknown';
         }
       });
   });
