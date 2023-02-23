@@ -80,6 +80,10 @@ export default () => {
         watchedState.form.status = 'sending';
         return urlRSS;
       })
+      .catch((err) => {
+        watchedState.form.status = 'failed';
+        watchedState.form.errors = err.message;
+      })
       .then((validatedUrl) => {
         watchedState.loadingProcess.errors = null;
         watchedState.loadingProcess.status = 'sending';
@@ -102,20 +106,11 @@ export default () => {
         watchedState.form.status = 'success';
       })
       .catch((err) => {
-        switch (err.message) {
-          case 'linkExists':
-          case 'mustBeValid':
-            watchedState.form.status = 'failed';
-            watchedState.form.errors = err.message;
-            break;
-          case 'invalidRSS':
-            watchedState.loadingProcess.status = 'failed';
-            watchedState.loadingProcess.errors = err.message;
-            break;
-          case 'Network Error':
-            watchedState.loadingProcess.errors = 'network';
-            break;
-          default: watchedState.loadingProcess.status = 'unknown';
+        if (err.isParsingError) {
+          watchedState.loadingProcess.status = 'failed';
+          watchedState.loadingProcess.errors = err.message;
+        } else if (err.isAxiosError) {
+          watchedState.loadingProcess.errors = 'network';
         }
       });
   });
