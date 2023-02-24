@@ -24,15 +24,14 @@ const fetchRSS = (url) => axios.get(buildProxyURL(url));
 
 const addFeed = (url, data, state) => {
   const { feed } = data;
-  // чтоб не ругался линтер
-  const watchedState = state;
 
   feed.id = _.uniqueId();
   feed.url = url;
-  watchedState.feeds.unshift(feed);
+  state.feeds.unshift(feed);
 
-  watchedState.posts = [...data.posts, ...watchedState.posts];
-  watchedState.posts.forEach((p) => {
+  /* eslint-disable no-params-ressign */
+  state.posts = [...data.posts, ...state.posts];
+  state.posts.forEach((p) => {
     const post = p;
     post.id = _.uniqueId();
     post.feedId = data.feed.id;
@@ -40,29 +39,29 @@ const addFeed = (url, data, state) => {
 };
 
 const updatePosts = (state) => {
-  // чтоб не ругался линтер
-  const watchedState = state;
-
-  const urls = watchedState.feeds.map((feed) => feed.url);
+  const urls = state.feeds.map((feed) => feed.url);
   const promises = urls.map((url) => fetchRSS(url)
     .then((response) => {
       const data = parseRSS(response.data.contents);
-      const postsForFeed = watchedState.posts.filter(
+      const postsForFeed = state.posts.filter(
         (post) => post.feedId === data.feed.id,
       );
-      const postLinksForFeed = watchedState.posts
+      const postLinksForFeed = state.posts
         .filter((post) => post.id === data.feed.id)
         .map((post) => post.link);
       const addedPosts = postsForFeed.filter(
         (post) => !postLinksForFeed.includes(post.link),
       );
-      watchedState.posts = addedPosts.concat(...watchedState.posts);
+
+      /* eslint-disable no-params-ressign */
+      state.posts = addedPosts.concat(...state.posts);
+      console.log(state.posts);
     })
     .catch((err) => {
       console.error(err);
     }));
 
-  Promise.all(promises).finally(() => setTimeout(() => updatePosts(), DELAY));
+  Promise.all(promises).finally(() => setTimeout(() => updatePosts(state), DELAY));
 };
 
 export default () => {
@@ -152,6 +151,7 @@ export default () => {
           }
         });
     });
+
     elements.posts.addEventListener('click', (evt) => {
       if (evt.target.hasAttribute('data-id')) {
         const currentPostId = evt.target.dataset.id;
@@ -163,10 +163,6 @@ export default () => {
       watchedState.currentPostId = currentPost.id;
     });
 
-    elements.localesBtnGroup.addEventListener('click', (evt) => {
-      const language = evt.target.dataset.lng;
-      watchedState.lng = language;
-    });
     updatePosts(watchedState);
   });
 };
