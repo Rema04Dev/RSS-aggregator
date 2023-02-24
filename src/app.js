@@ -22,6 +22,20 @@ const buildProxyURL = (url) => `https://allorigins.hexlet.app/get?disableCache=t
 
 const fetchRSS = (url) => axios.get(buildProxyURL(url));
 
+const addFeed = (url, data, state) => {
+  const { feed } = data;
+
+  feed.id = _.uniqueId();
+  feed.url = url;
+  state.feeds.unshift(feed);
+
+  state.posts = [...data.posts, ...state.posts];
+  state.posts.forEach((p) => {
+    const post = p;
+    post.id = _.uniqueId();
+    post.feedId = data.feed.id;
+  });
+};
 export default () => {
   const i18nextInstance = i18next.createInstance();
   i18nextInstance.init({
@@ -54,11 +68,11 @@ export default () => {
     const initialState = {
       form: {
         status: 'filling',
-        errors: null,
+        error: null,
       },
       loadingProcess: {
         status: 'idle',
-        errors: null,
+        error: null,
       },
       lng: 'ru',
       feeds: [],
@@ -75,29 +89,19 @@ export default () => {
       const urls = watchedState.feeds.map((feed) => feed.url);
       validate(url, urls)
         .then((urlRSS) => {
-          watchedState.form.errors = null;
+          watchedState.form.error = null;
           watchedState.form.status = 'sending';
           return urlRSS;
         })
         .then((validatedUrl) => {
-          watchedState.loadingProcess.errors = null;
+          watchedState.loadingProcess.error = null;
           watchedState.loadingProcess.status = 'sending';
           return fetchRSS(validatedUrl);
         })
         .then((response) => {
           const data = parseRSS(response.data.contents);
-
-          data.feed.id = _.uniqueId();
-          data.feed.url = url;
-          watchedState.feeds.unshift(data.feed);
-
-          watchedState.posts = [...data.posts, ...watchedState.posts];
-          watchedState.posts.forEach((p) => {
-            const post = p;
-            post.id = _.uniqueId();
-            post.feedId = data.feed.id;
-          });
-          watchedState.form.errors = '';
+          addFeed(url, data, watchedState);
+          watchedState.form.error = '';
           watchedState.form.status = 'success';
         })
         .catch((err) => {
@@ -105,14 +109,14 @@ export default () => {
             case 'linkExists':
             case 'mustBeValid':
               watchedState.form.status = 'failed';
-              watchedState.form.errors = err.message;
+              watchedState.form.error = err.message;
               break;
             case 'invalidRSS':
               watchedState.loadingProcess.status = 'failed';
-              watchedState.loadingProcess.errors = err.message;
+              watchedState.loadingProcess.error = err.message;
               break;
             case 'Network Error':
-              watchedState.loadingProcess.errors = 'network';
+              watchedState.loadingProcess.error = 'network';
               break;
             default:
               watchedState.loadingProcess.status = 'unknown';

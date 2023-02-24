@@ -156,7 +156,7 @@ const watch = (state, elements, i18nextInstance) => onChange(state, (path, value
       clear(elements);
       processHandler(value, elements, i18nextInstance);
       break;
-    case 'form.errors':
+    case 'form.error':
       clear(elements);
       renderError(value, elements, i18nextInstance);
       break;
@@ -164,7 +164,7 @@ const watch = (state, elements, i18nextInstance) => onChange(state, (path, value
       clear(elements);
       processHandler(value, elements, i18nextInstance);
       break;
-    case 'loadingProcess.errors':
+    case 'loadingProcess.error':
       clear(elements);
       renderError(value, elements, i18nextInstance);
       break;
