@@ -88,7 +88,8 @@ const renderVisistedPosts = (visitedPostsId) => {
   });
 };
 
-const renderModal = (post) => {
+const renderModal = (state, postId) => {
+  const post = state.posts.find((p) => p.id === postId);
   const {
     id, title, description, link,
   } = post;
@@ -180,7 +181,7 @@ const watch = (state, elements, i18nextInstance) => onChange(state, (path, value
       renderVisistedPosts(value);
       break;
     case 'currentPost':
-      renderModal(value, elements);
+      renderModal(state, value, elements);
       break;
 
     default:

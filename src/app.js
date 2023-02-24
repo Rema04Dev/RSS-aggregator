@@ -124,9 +124,8 @@ export default () => {
       }
 
       const { id } = evt.target.dataset;
-      watchedState.currentPost = watchedState.posts.find(
-        (post) => post.id === id,
-      );
+      const currentPost = watchedState.posts.find((post) => post.id === id);
+      watchedState.currentPost = currentPost.id;
     });
 
     elements.localesBtnGroup.addEventListener('click', (evt) => {
