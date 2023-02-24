@@ -10,10 +10,10 @@ env:
   jest: true
   browser: true
 
-parser: "@babel/eslint-parser"
+parser: '@babel/eslint-parser'
 
 extends:
-  - "airbnb-base"
+  - 'airbnb-base'
 
 rules:
   no-console: 0

@@ -29,7 +29,7 @@ const addFeed = (url, data, state) => {
   feed.url = url;
   state.feeds.unshift(feed);
 
-  /* eslint-disable no-params-ressign */
+  /* eslint-disable no-param-reassign */
   state.posts = [...data.posts, ...state.posts];
   state.posts.forEach((p) => {
     const post = p;
@@ -53,7 +53,7 @@ const updatePosts = (state) => {
         (post) => !postLinksForFeed.includes(post.link),
       );
 
-      /* eslint-disable no-params-ressign */
+      /* eslint-disable no-param-reassign */
       state.posts = addedPosts.concat(...state.posts);
       console.log(state.posts);
     })
