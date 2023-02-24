@@ -64,7 +64,7 @@ export default () => {
       feeds: [],
       posts: [],
       visitedPostsId: [],
-      currentPost: null,
+      currentPostId: null,
     };
 
     const watchedState = watch(initialState, elements, i18nextInstance);
@@ -127,7 +127,7 @@ export default () => {
 
       const { id } = evt.target.dataset;
       const currentPost = watchedState.posts.find((post) => post.id === id);
-      watchedState.currentPost = currentPost.id;
+      watchedState.currentPostId = currentPost.id;
     });
 
     elements.localesBtnGroup.addEventListener('click', (evt) => {
