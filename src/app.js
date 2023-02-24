@@ -50,14 +50,15 @@ export default () => {
       templatePost: document.querySelector('#template-posts-wrapper'),
       templatePostElement: document.querySelector('#template-post-element'),
     };
+
     const initialState = {
       form: {
         status: 'filling',
-        error: null,
+        errors: null,
       },
       loadingProcess: {
         status: 'idle',
-        error: null,
+        errors: null,
       },
       lng: 'ru',
       feeds: [],
@@ -65,6 +66,7 @@ export default () => {
       visitedPostsId: [],
       currentPost: null,
     };
+
     const watchedState = watch(initialState, elements, i18nextInstance);
     elements.form.addEventListener('submit', (evt) => {
       evt.preventDefault();
