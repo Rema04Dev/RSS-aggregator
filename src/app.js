@@ -48,11 +48,11 @@ export default () => {
   const initialState = {
     form: {
       status: 'filling',
-      errors: null,
+      error: null,
     },
     loadingProcess: {
       status: 'idle',
-      errors: null,
+      error: null,
     },
     lng: 'ru',
     feeds: [],
