@@ -123,12 +123,10 @@ export default () => {
         watchedState.visitedPostsId.push(currentPostId);
       }
 
-      if (evt.target.hasAttribute('data-bs-toggle')) {
-        const { id } = evt.target.dataset;
-        watchedState.currentPost = watchedState.posts.find(
-          (post) => post.id === id,
-        );
-      }
+      const { id } = evt.target.dataset;
+      watchedState.currentPost = watchedState.posts.find(
+        (post) => post.id === id,
+      );
     });
 
     elements.localesBtnGroup.addEventListener('click', (evt) => {
