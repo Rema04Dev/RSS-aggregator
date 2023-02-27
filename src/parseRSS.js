@@ -5,7 +5,6 @@ export default (xml) => {
   if (parseError) {
     const error = new Error();
     error.name = 'ParsingError';
-    error.message = 'invalidRSS';
     error.isParsingError = true;
     throw error;
   }

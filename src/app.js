@@ -20,7 +20,7 @@ const buildProxyURL = (url) => `https://allorigins.hexlet.app/get?disableCache=t
   url,
 )}`;
 
-const fetchRSS = (url) => axios.get(buildProxyURL(url));
+// const fetchRSS = (url) => axios.get(buildProxyURL(url));
 
 const addFeed = (url, data, state) => {
   const { feed } = data;
@@ -36,6 +36,33 @@ const addFeed = (url, data, state) => {
     post.id = _.uniqueId();
     post.feedId = data.feed.id;
   });
+};
+
+const fetchRSS = (url, state) => {
+  axios.get(buildProxyURL(url))
+    .then((response) => {
+      /* eslint-disable no-param-reassign */
+      state.loadingProcess.error = null;
+      state.loadingProcess.status = 'sending';
+      const data = parseRSS(response.data.contents);
+      addFeed(url, data, state);
+      state.form.error = null;
+      state.form.status = 'success';
+      state.loadingProcess.error = null;
+      state.loadingProcess.status = 'success';
+    })
+    .catch((err) => {
+      if (err.isAxiosError) {
+        state.loadingProcess.error = 'network';
+        state.form.status = 'failed';
+      } else if (err.isParsingError) {
+        state.loadingProcess.status = 'failed';
+        state.loadingProcess.error = 'invalidRSS';
+        state.form.status = 'failed';
+      } else {
+        state.loadingProcess.error = 'unknown';
+      }
+    });
 };
 
 const updatePosts = (state) => {
@@ -55,7 +82,6 @@ const updatePosts = (state) => {
 
       /* eslint-disable no-param-reassign */
       state.posts = addedPosts.concat(...state.posts);
-      console.log(state.posts);
     })
     .catch((err) => {
       console.error(err);
@@ -95,11 +121,11 @@ export default () => {
 
     const initialState = {
       form: {
-        status: 'filling',
+        status: 'filling', // filling | sending | success | failed
         error: null,
       },
       loadingProcess: {
-        status: 'idle',
+        status: 'idle', // idle | sending | success | failed
         error: null,
       },
       lng: 'ru',
@@ -115,40 +141,13 @@ export default () => {
       const formData = new FormData(evt.target);
       const url = formData.get('url');
       const urls = watchedState.feeds.map((feed) => feed.url);
+      watchedState.form.error = null;
+      watchedState.form.status = 'sending';
       validate(url, urls)
-        .then((urlRSS) => {
-          watchedState.form.error = null;
-          watchedState.form.status = 'sending';
-          return urlRSS;
-        })
-        .then((validatedUrl) => {
-          watchedState.loadingProcess.error = null;
-          watchedState.loadingProcess.status = 'sending';
-          return fetchRSS(validatedUrl);
-        })
-        .then((response) => {
-          const data = parseRSS(response.data.contents);
-          addFeed(url, data, watchedState);
-          watchedState.form.error = '';
-          watchedState.form.status = 'success';
-        })
+        .then(() => fetchRSS(url, watchedState))
         .catch((err) => {
-          switch (err.message) {
-            case 'linkExists':
-            case 'mustBeValid':
-              watchedState.form.status = 'failed';
-              watchedState.form.error = err.message;
-              break;
-            case 'invalidRSS':
-              watchedState.loadingProcess.status = 'failed';
-              watchedState.loadingProcess.error = err.message;
-              break;
-            case 'Network Error':
-              watchedState.loadingProcess.error = 'network';
-              break;
-            default:
-              watchedState.loadingProcess.status = 'unknown';
-          }
+          watchedState.form.status = 'failed';
+          watchedState.form.error = err.message;
         });
     });
 
