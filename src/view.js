@@ -120,6 +120,7 @@ const processHandler = (status, elements, i18next) => {
 };
 
 const renderError = (errType, elements, i18next) => {
+  console.log(i18next.t(`messages.${errType}`))
   const { input, feedback } = elements;
   input.classList.add('is-invalid');
   feedback.classList.add('text-danger');

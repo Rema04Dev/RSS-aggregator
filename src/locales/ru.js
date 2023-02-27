@@ -15,7 +15,6 @@ export default {
       unknown: 'Неизвестная ошибка',
       success: 'RSS успешно загружен',
       sending: 'Идёт загрузка RSS...',
-      emptyField: 'Поле не должно быть пустым',
     },
   },
 };

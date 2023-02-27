@@ -44,24 +44,22 @@ const fetchRSS = (url, state) => {
       /* eslint-disable no-param-reassign */
       const data = parseRSS(response.data.contents);
       addFeed(url, data, state);
-      state.form.error = null;
-      state.form.status = 'success';
-      state.loadingProcess.error = null;
+
       state.loadingProcess.status = 'success';
+      state.loadingProcess.error = null;
     })
     .catch((err) => {
       if (err.isAxiosError) {
         state.loadingProcess.error = 'network';
-        state.form.status = 'failed';
       } else if (err.isParsingError) {
-        state.loadingProcess.status = 'failed';
         state.loadingProcess.error = err.message;
-        state.form.status = 'failed';
       } else {
         state.loadingProcess.error = 'unknown';
       }
+      state.loadingProcess.status = 'failed';
     });
 };
+
 const updatePosts = (state) => {
   const urls = state.feeds.map((feed) => feed.url);
   const promises = urls.map((url) => fetchRSS(url, state)
@@ -138,10 +136,18 @@ export default () => {
       const formData = new FormData(evt.target);
       const url = formData.get('url');
       const urls = watchedState.feeds.map((feed) => feed.url);
-      watchedState.loadingProcess.status = 'sending';
-      watchedState.loadingProcess.error = null;
+      watchedState.form.status = 'sending';
+      watchedState.form.error = null;
       validate(url, urls)
-        .then(() => fetchRSS(url, watchedState))
+        .then(() => {
+          watchedState.form.status = 'success';
+          watchedState.form.error = null;
+
+          watchedState.loadingProcess.status = 'sending';
+          watchedState.loadingProcess.error = null;
+
+          fetchRSS(url, watchedState);
+        })
         .catch((err) => {
           watchedState.form.status = 'failed';
           watchedState.form.error = err.message;
@@ -159,6 +165,6 @@ export default () => {
       watchedState.currentPostId = currentPost.id;
     });
 
-    updatePosts(watchedState);
+    // updatePosts(watchedState);
   });
 };
