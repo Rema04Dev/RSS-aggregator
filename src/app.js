@@ -42,8 +42,6 @@ const fetchRSS = (url, state) => {
   axios.get(buildProxyURL(url))
     .then((response) => {
       /* eslint-disable no-param-reassign */
-      state.loadingProcess.error = null;
-      state.loadingProcess.status = 'sending';
       const data = parseRSS(response.data.contents);
       addFeed(url, data, state);
       state.form.error = null;
@@ -57,17 +55,16 @@ const fetchRSS = (url, state) => {
         state.form.status = 'failed';
       } else if (err.isParsingError) {
         state.loadingProcess.status = 'failed';
-        state.loadingProcess.error = 'invalidRSS';
+        state.loadingProcess.error = err.message;
         state.form.status = 'failed';
       } else {
         state.loadingProcess.error = 'unknown';
       }
     });
 };
-
 const updatePosts = (state) => {
   const urls = state.feeds.map((feed) => feed.url);
-  const promises = urls.map((url) => fetchRSS(url)
+  const promises = urls.map((url) => fetchRSS(url, state)
     .then((response) => {
       const data = parseRSS(response.data.contents);
       const postsForFeed = state.posts.filter(
@@ -121,11 +118,11 @@ export default () => {
 
     const initialState = {
       form: {
-        status: 'filling', // filling | sending | success | failed
+        status: 'filling',
         error: null,
       },
       loadingProcess: {
-        status: 'idle', // idle | sending | success | failed
+        status: 'idle',
         error: null,
       },
       lng: 'ru',
@@ -141,8 +138,8 @@ export default () => {
       const formData = new FormData(evt.target);
       const url = formData.get('url');
       const urls = watchedState.feeds.map((feed) => feed.url);
-      watchedState.form.error = null;
-      watchedState.form.status = 'sending';
+      watchedState.loadingProcess.status = 'sending';
+      watchedState.loadingProcess.error = null;
       validate(url, urls)
         .then(() => fetchRSS(url, watchedState))
         .catch((err) => {
