@@ -44,19 +44,17 @@ const fetchRSS = (url, state) => {
       /* eslint-disable no-param-reassign */
       const data = parseRSS(response.data.contents);
       addFeed(url, data, state);
-
-      state.loadingProcess.status = 'success';
-      state.loadingProcess.error = null;
+      state.loadingProcess = { status: 'success', error: null }; // done
     })
     .catch((err) => {
       if (err.isAxiosError) {
         state.loadingProcess.error = 'network';
       } else if (err.isParsingError) {
-        state.loadingProcess.error = err.message;
+        state.loadingProcess.error = 'invalidRSS';
       } else {
         state.loadingProcess.error = 'unknown';
       }
-      state.loadingProcess.status = 'failed';
+      state.loadingProcess = { ...state.loadingProcess, status: 'failed' };
     });
 };
 
@@ -140,17 +138,13 @@ export default () => {
       watchedState.form.error = null;
       validate(url, urls)
         .then(() => {
-          watchedState.form.status = 'success';
-          watchedState.form.error = null;
-
-          watchedState.loadingProcess.status = 'sending';
-          watchedState.loadingProcess.error = null;
+          watchedState.form = { status: 'success', error: null }; // done
+          watchedState.loadingProcess = { status: 'loading', error: null }; // done
 
           fetchRSS(url, watchedState);
         })
         .catch((err) => {
-          watchedState.form.status = 'failed';
-          watchedState.form.error = err.message;
+          watchedState.form = { status: 'failed', error: err.message }; // done
         });
     });
 
@@ -165,6 +159,6 @@ export default () => {
       watchedState.currentPostId = currentPost.id;
     });
 
-    // updatePosts(watchedState);
+    updatePosts(watchedState);
   });
 };

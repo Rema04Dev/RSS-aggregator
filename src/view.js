@@ -93,57 +93,66 @@ const clear = (elements) => {
   button.disabled = '';
 };
 
-const processHandler = (status, elements, i18next) => {
-  const {
-    form, input, button, feedback,
-  } = elements;
-  switch (status) {
-    case 'filling':
-      elements.input.focus();
-      break;
-    case 'sending':
-      input.focus();
-      input.disabled = true;
-      button.disabled = true;
-      feedback.classList.add('text-warning');
-      feedback.textContent = i18next.t('messages.sending');
-      break;
-    case 'success':
-      input.focus();
-      form.reset();
-      feedback.classList.add('text-success');
-      feedback.textContent = i18next.t('messages.success');
-      break;
-    default:
-      break;
-  }
-};
-
 const renderError = (errType, elements, i18next) => {
-  console.log(i18next.t(`messages.${errType}`))
   const { input, feedback } = elements;
   input.classList.add('is-invalid');
   feedback.classList.add('text-danger');
   feedback.textContent = errType ? i18next.t(`messages.${errType}`) : '';
 };
 
+const processHandler = (state, elements, i18next) => {
+  const { status, error } = state;
+  const { input, button, feedback } = elements;
+
+  switch (status) {
+    case 'success':
+      input.focus();
+      feedback.classList.add('text-success');
+      feedback.textContent = i18next.t('messages.success');
+      break;
+    case 'loading':
+      input.disabled = true;
+      button.disabled = true;
+      feedback.classList.add('text-warning');
+      feedback.textContent = i18next.t('messages.loading');
+      break;
+    case 'failed':
+      renderError(error, elements, i18next);
+      break;
+    default:
+      break;
+  }
+};
+
+const formHandler = (state, elements, i18next) => {
+  const { status, error } = state;
+  const { form, input } = elements;
+
+  switch (status) {
+    case 'filling':
+      elements.input.focus();
+      break;
+    case 'success':
+      input.focus();
+      form.reset();
+      break;
+    case 'failed':
+      renderError(error, elements, i18next);
+      break;
+    default:
+      break;
+  }
+};
+
 const watch = (state, elements, i18nextInstance) => onChange(state, (path, value) => {
   switch (path) {
-    case 'form.status':
+    case 'form':
+      clear(elements);
+      formHandler(value, elements, i18nextInstance);
+      break;
+    case 'loadingProcess':
       clear(elements);
       processHandler(value, elements, i18nextInstance);
-      break;
-    case 'form.error':
-      clear(elements);
-      renderError(value, elements, i18nextInstance);
-      break;
-    case 'loadingProcess.status':
-      clear(elements);
-      processHandler(value, elements, i18nextInstance);
-      break;
-    case 'loadingProcess.error':
-      clear(elements);
-      renderError(value, elements, i18nextInstance);
       break;
     case 'feeds':
       renderFeeds(value, elements, i18nextInstance);
