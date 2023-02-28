@@ -7,7 +7,7 @@ import resources from './locales/index';
 import parseRSS from './parseRSS';
 
 const DEFAULT_LANGUAGE = 'ru';
-const DELAY = 5000;
+const DELAY = 1500;
 
 const validate = (url, urls) => yup
   .string()
@@ -60,7 +60,8 @@ const fetchRSS = (url, state) => {
 
 const updatePosts = (state) => {
   const urls = state.feeds.map((feed) => feed.url);
-  const promises = urls.map((url) => fetchRSS(url, state)
+  console.log(urls);
+  const promises = urls.map((url) => axios.get(buildProxyURL(url))
     .then((response) => {
       const data = parseRSS(response.data.contents);
       const postsForFeed = state.posts.filter(
