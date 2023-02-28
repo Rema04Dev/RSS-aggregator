@@ -2,7 +2,7 @@ export default (xml) => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(xml, 'text/xml');
   const parseError = doc.querySelector('parsererror');
-  if (parseError) {
+  if (parseError?.textContent) {
     const error = new Error();
     error.name = 'ParsingError';
     error.message = 'invalidRSS';

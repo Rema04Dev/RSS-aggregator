@@ -20,8 +20,6 @@ const buildProxyURL = (url) => `https://allorigins.hexlet.app/get?disableCache=t
   url,
 )}`;
 
-// const fetchRSS = (url) => axios.get(buildProxyURL(url));
-
 const addFeed = (url, data, state) => {
   const { feed } = data;
 
@@ -44,13 +42,13 @@ const fetchRSS = (url, state) => {
       /* eslint-disable no-param-reassign */
       const data = parseRSS(response.data.contents);
       addFeed(url, data, state);
-      state.loadingProcess = { status: 'success', error: null }; // done
+      state.loadingProcess = { status: 'success', error: null };
     })
     .catch((err) => {
       if (err.isAxiosError) {
         state.loadingProcess.error = 'network';
       } else if (err.isParsingError) {
-        state.loadingProcess.error = 'invalidRSS';
+        state.loadingProcess.error = err.message;
       } else {
         state.loadingProcess.error = 'unknown';
       }
@@ -139,13 +137,13 @@ export default () => {
       watchedState.form.error = null;
       validate(url, urls)
         .then(() => {
-          watchedState.form = { status: 'success', error: null }; // done
-          watchedState.loadingProcess = { status: 'loading', error: null }; // done
+          watchedState.form = { status: 'success', error: null };
+          watchedState.loadingProcess = { status: 'loading', error: null };
 
           fetchRSS(url, watchedState);
         })
         .catch((err) => {
-          watchedState.form = { status: 'failed', error: err.message }; // done
+          watchedState.form = { status: 'failed', error: err.message };
         });
     });
 
