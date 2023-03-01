@@ -37,7 +37,6 @@ const addFeed = (url, data, state) => {
 
   state.feeds.unshift(feed);
   state.posts = [...data.posts, ...state.posts];
-  console.log(state);
 };
 
 const fetchRSS = (url, state) => {
@@ -51,7 +50,7 @@ const fetchRSS = (url, state) => {
       if (err.isAxiosError) {
         state.loadingProcess.error = 'network';
       } else if (err.isParsingError) {
-        state.loadingProcess.error = err.message;
+        state.loadingProcess.error = 'invalidRSS';
       } else {
         state.loadingProcess.error = 'unknown';
       }
