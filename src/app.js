@@ -16,9 +16,12 @@ const validate = (url, urls) => yup
   .notOneOf(urls, 'linkExists')
   .validate(url);
 
-const buildProxyURL = (url) => `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(
-  url,
-)}`;
+const buildProxyURL = (url) => {
+  const resultUrl = new URL('https://allorigins.hexlet.app/get');
+  resultUrl.searchParams.set('disableCache', true);
+  resultUrl.searchParams.set('url', url);
+  return resultUrl;
+};
 
 const addFeed = (url, data, state) => {
   const { feed } = data;
