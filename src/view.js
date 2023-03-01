@@ -102,11 +102,14 @@ const renderError = (errType, elements, i18next) => {
 
 const processHandler = (state, elements, i18next) => {
   const { status, error } = state;
-  const { input, button, feedback } = elements;
-
+  const {
+    form, input, button, feedback,
+  } = elements;
+  console.log(`Process:\nstatus: ${status}\nerror: ${error}`);
   switch (status) {
     case 'success':
       input.focus();
+      form.reset();
       feedback.classList.add('text-success');
       feedback.textContent = i18next.t('messages.success');
       break;
@@ -127,14 +130,11 @@ const processHandler = (state, elements, i18next) => {
 const formHandler = (state, elements, i18next) => {
   const { status, error } = state;
   const { form, input } = elements;
+  console.log(`Form:\nstatus: ${status}\nerror: ${error}`);
 
   switch (status) {
     case 'filling':
-      elements.input.focus();
-      break;
-    case 'success':
       input.focus();
-      form.reset();
       break;
     case 'failed':
       renderError(error, elements, i18next);

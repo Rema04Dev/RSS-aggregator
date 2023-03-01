@@ -54,13 +54,12 @@ const fetchRSS = (url, state) => {
       } else {
         state.loadingProcess.error = 'unknown';
       }
-      state.loadingProcess.status = 'failed';
+      state.loadingProcess = { ...state.loadingProcess, status: 'failed' };
     });
 };
 
 const updatePosts = (state) => {
   const urls = state.feeds.map((feed) => feed.url);
-  console.log(urls);
   const promises = urls.map((url) => axios.get(buildProxyURL(url))
     .then((response) => {
       const data = parseRSS(response.data.contents);
@@ -133,13 +132,10 @@ export default () => {
       const formData = new FormData(evt.target);
       const url = formData.get('url');
       const urls = watchedState.feeds.map((feed) => feed.url);
-      watchedState.form.status = 'sending';
-      watchedState.form.error = null;
+      watchedState.loadingProcess = { status: 'loading', error: null };
       validate(url, urls)
         .then(() => {
-          watchedState.form = { status: 'success', error: null };
-          watchedState.loadingProcess = { status: 'loading', error: null };
-
+          // watchedState.form = { status: 'filling', error: null };
           fetchRSS(url, watchedState);
         })
         .catch((err) => {
