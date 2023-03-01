@@ -27,7 +27,6 @@ const addFeed = (url, data, state) => {
   feed.url = url;
   state.feeds.unshift(feed);
 
-  /* eslint-disable no-param-reassign */
   state.posts = [...data.posts, ...state.posts];
   state.posts.forEach((p) => {
     const post = p;
@@ -39,7 +38,6 @@ const addFeed = (url, data, state) => {
 const fetchRSS = (url, state) => {
   axios.get(buildProxyURL(url))
     .then((response) => {
-      /* eslint-disable no-param-reassign */
       const data = parseRSS(response.data.contents);
       addFeed(url, data, state);
       state.loadingProcess = { status: 'success', error: null };
@@ -72,7 +70,6 @@ const updatePosts = (state) => {
         (post) => !postLinksForFeed.includes(post.link),
       );
 
-      /* eslint-disable no-param-reassign */
       state.posts = addedPosts.concat(...state.posts);
     })
     .catch((err) => {
