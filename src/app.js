@@ -145,8 +145,7 @@ export default () => {
 
     elements.posts.addEventListener('click', (evt) => {
       const { id } = evt.target.dataset;
-      const currentPost = watchedState.posts.find((post) => post.id === id);
-      watchedState.currentPostId = currentPost.id;
+      watchedState.currentPostId = id;
       watchedState.visitedPostsId.push(id);
     });
 
