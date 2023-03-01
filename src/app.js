@@ -54,7 +54,7 @@ const fetchRSS = (url, state) => {
       } else {
         state.loadingProcess.error = 'unknown';
       }
-      state.loadingProcess = { ...state.loadingProcess, status: 'failed' };
+      state.loadingProcess.status = 'failed';
     });
 };
 
@@ -68,7 +68,6 @@ const updatePosts = (state) => {
         (post) => post.feedId === data.feed.id,
       );
       const postLinksForFeed = state.posts
-        .filter((post) => post.id === data.feed.id)
         .map((post) => post.link);
       const addedPosts = postsForFeed.filter(
         (post) => !postLinksForFeed.includes(post.link),
