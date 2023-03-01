@@ -144,14 +144,10 @@ export default () => {
     });
 
     elements.posts.addEventListener('click', (evt) => {
-      if (evt.target.hasAttribute('data-id')) {
-        const currentPostId = evt.target.dataset.id;
-        watchedState.visitedPostsId.push(currentPostId);
-      }
-
       const { id } = evt.target.dataset;
       const currentPost = watchedState.posts.find((post) => post.id === id);
       watchedState.currentPostId = currentPost.id;
+      watchedState.visitedPostsId.push(id);
     });
 
     updatePosts(watchedState);
