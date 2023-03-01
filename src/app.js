@@ -24,18 +24,20 @@ const buildProxyURL = (url) => {
 };
 
 const addFeed = (url, data, state) => {
-  const { feed } = data;
+  const { feed, posts } = data;
 
   feed.id = _.uniqueId();
   feed.url = url;
-  state.feeds.unshift(feed);
 
-  state.posts = [...data.posts, ...state.posts];
-  state.posts.forEach((p) => {
+  posts.forEach((p) => {
     const post = p;
     post.id = _.uniqueId();
     post.feedId = data.feed.id;
   });
+
+  state.feeds.unshift(feed);
+  state.posts = [...data.posts, ...state.posts];
+  console.log(state);
 };
 
 const fetchRSS = (url, state) => {
