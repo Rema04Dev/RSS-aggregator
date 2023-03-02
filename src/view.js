@@ -89,8 +89,8 @@ const clear = (elements) => {
   feedback.classList.remove('text-warning');
   feedback.textContent = '';
 
-  input.disabled = '';
-  button.disabled = '';
+  input.disabled = false;
+  button.disabled = false;
 };
 
 const renderError = (errType, elements, i18next) => {
