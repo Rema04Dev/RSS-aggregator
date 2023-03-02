@@ -105,7 +105,6 @@ const processHandler = (state, elements, i18next) => {
   const {
     form, input, button, feedback,
   } = elements;
-  console.log(`Process:\nstatus: ${status}\nerror: ${error}`);
   switch (status) {
     case 'success':
       input.focus();
@@ -129,8 +128,7 @@ const processHandler = (state, elements, i18next) => {
 
 const formHandler = (state, elements, i18next) => {
   const { status, error } = state;
-  const { form, input } = elements;
-  console.log(`Form:\nstatus: ${status}\nerror: ${error}`);
+  const { input } = elements;
 
   switch (status) {
     case 'filling':
@@ -147,7 +145,6 @@ const formHandler = (state, elements, i18next) => {
 const watch = (state, elements, i18nextInstance) => onChange(state, (path, value) => {
   switch (path) {
     case 'form':
-      clear(elements);
       formHandler(value, elements, i18nextInstance);
       break;
     case 'loadingProcess':

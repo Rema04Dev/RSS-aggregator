@@ -135,7 +135,7 @@ export default () => {
       watchedState.loadingProcess = { status: 'loading', error: null };
       validate(url, urls)
         .then(() => {
-          // watchedState.form = { status: 'filling', error: null };
+          watchedState.form = { status: 'filling', error: null };
           fetchRSS(url, watchedState);
         })
         .catch((err) => {
