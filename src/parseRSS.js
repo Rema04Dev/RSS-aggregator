@@ -10,16 +10,16 @@ export default (xml) => {
   const feedTitle = doc.querySelector('title');
   const feedDescription = doc.querySelector('description');
   const feedItems = [...doc.querySelectorAll('item')];
-  const items = feedItems.map((item) => ({
-    title: item.querySelector('title').textContent,
-    description: item.querySelector('description').textContent,
-    link: item.querySelector('link').textContent,
+  const posts = feedItems.map((post) => ({
+    title: post.querySelector('title').textContent,
+    description: post.querySelector('description').textContent,
+    link: post.querySelector('link').textContent,
   }));
   return {
     feed: {
       title: feedTitle.textContent,
       description: feedDescription.textContent,
     },
-    posts: [...items],
+    posts,
   };
 };
