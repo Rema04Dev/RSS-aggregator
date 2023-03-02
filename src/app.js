@@ -7,7 +7,7 @@ import resources from './locales/index';
 import parseRSS from './parseRSS';
 
 const DEFAULT_LANGUAGE = 'ru';
-const DELAY = 1500;
+const DELAY = 5000;
 
 const validate = (url, urls) => yup
   .string()
