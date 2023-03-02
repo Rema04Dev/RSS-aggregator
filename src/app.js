@@ -143,10 +143,15 @@ export default () => {
         });
     });
 
-    elements.posts.addEventListener('click', (evt) => {
-      const { id } = evt.target.dataset;
-      watchedState.currentPostId = id;
-      watchedState.visitedPostsId.push(id);
+    elements.posts.addEventListener('click', ({ target }) => {
+      if (target.dataset.id) {
+        const { id } = target.dataset;
+        watchedState.currentPostId = id;
+        if (!watchedState.visitedPostsId.includes(id)) {
+          watchedState.visitedPostsId.push(id);
+        }
+      }
+      return false;
     });
 
     updatePosts(watchedState);
