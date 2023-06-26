@@ -36,3 +36,5 @@ $make run
 ```
 
 ### [Demonstration](https://rss-aggregator-brown.vercel.app/)
+
+<img src="https://cdn2.hexlet.io/derivations/image/original/eyJpZCI6Ijc1YzBjZGNlYjYyN2EyZDdkMDVlMTZiOTVmOTU2YWEwLnBuZyIsInN0b3JhZ2UiOiJjYWNoZSJ9?signature=b3806a16342aebd980fb99d658dbc41777a1e40c046103a610381ce453d756b4">
